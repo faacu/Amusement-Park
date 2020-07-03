@@ -1,0 +1,134 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CodigoTP2Estudio
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int edad, totalPasaporte, personas, gente10y15, personasPasaT, vis, ingresoPers;
+            double entrada, bebes, niños, menores, precio, recaudPasaporte, recaudIndiv, recaudTotal, promedio, promEdad, personasTotal;
+
+            Console.Write("Ingrese el precio de las entradas: $ ");
+            entrada = Convert.ToDouble(Console.ReadLine());
+
+            bebes = 0.10 * entrada; //entre 0 y 3 años/
+            niños = 0.50 * entrada; // entre 4 y 10 años/
+            menores = 0.80 * entrada; //entre 11 y 15 años/
+            edad = 0;
+            personas = 0;
+            totalPasaporte = 0;
+            personasTotal = 0;
+            precio = 0;
+            gente10y15 = 0;
+            promEdad = 0;
+            promedio = 0;
+            recaudTotal = 0;
+            recaudPasaporte = 0;
+            personasPasaT = 0;
+            recaudIndiv = 0;
+            vis = 0;
+            ingresoPers = 0;
+
+            Console.WriteLine("-2 - Fin Agregado de Clientes");
+            Console.WriteLine("-3 - Cierre de Lote");
+            Console.WriteLine("Los grupos de 5 menores deben ingresar acompañados con un adulto");
+
+            while (ingresoPers != -3)
+            {
+                Console.Write("Numero de personas a ingresar: ");
+                ingresoPers = Convert.ToInt32(Console.ReadLine());
+                while (ingresoPers != -2)
+                {
+                    if (vis == 0)
+                    {
+                        Console.Write("Ingrese La edad del adulto: ");
+                        edad = Convert.ToInt32(Console.ReadLine());
+                        vis++;
+                    }
+                    //Evalua menores de 3, en cada caso, suma al acumulador y asigna precios/
+                    if (edad < 4 && edad > -1)
+                    {
+                        precio += bebes;
+                        personas++;
+
+                    }
+                    else if (edad > 3 && edad <= 10)
+                    {
+                        precio += niños;
+                        personas++;
+
+                    }
+                    else if (edad > 10 && edad <= 15)
+                    {
+                        precio += menores;
+                        personas++;
+                        gente10y15++;
+
+                    }
+                    else if (edad >= 16)
+                    {
+                        precio += entrada;
+                        personas++;
+
+                    }
+                    // Calcula promedio de edad
+                    promEdad += edad;
+                    if (vis == ingresoPers)
+                    {
+                        Console.Write("El siguiente numero de personas a ingresar: ");
+                        ingresoPers = Convert.ToInt32(Console.ReadLine());
+                        vis = 0;
+                    }
+                    if (vis >= 1)
+                    {
+                        Console.Write("Ingrese el acompañante nº{0}: ", vis);
+                        vis++;
+                        edad = Convert.ToInt32(Console.ReadLine());
+                    }
+                    if (edad == -2 || ingresoPers == -2)
+                    {
+                        break;
+
+                    }
+                }                   //final del while -2
+                //Evalua si se trata de un pasaporte/individual y suma cada caso/
+                if (personas >= 4)
+                {
+                    totalPasaporte++;
+                    personasPasaT += personas;
+                }
+                //suma la recaudacion individual o por pasaporte              
+                if (personas < 4)
+                {
+                    recaudIndiv += precio;
+                }
+                if (personas >= 4 && personas <= 10)
+                {
+                    precio = (precio * 85) / 100;
+                    recaudPasaporte += precio;
+                }
+                Console.WriteLine("El costo es de: {0:c}", precio); 
+                vis = 1;
+                personasTotal += personas;           
+                personas = 0;
+                promedio = promEdad / personasTotal;
+                recaudTotal += precio;
+                Console.WriteLine("-3 - Cierre de Lote\n En caso contrario escirba el siguiente grupo de personas que ingresara: ");
+                ingresoPers = Convert.ToInt32(Console.ReadLine());
+                precio = 0;
+
+            }                       //Final while -3
+            Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.Write("Total de grupos es: {0} ", totalPasaporte); Console.WriteLine("   Personas Total: {0}", personasTotal);
+            Console.Write("Recaudacion:"); Console.Write("   Con pasaporte: {0:C}", recaudPasaporte); Console.Write("   Individuales: {0}", recaudIndiv); Console.WriteLine("   Total:$ {0:C}", recaudTotal);
+            Console.Write("Personas con Pasaporte: {0}", personasPasaT); Console.WriteLine("    Personas entre 10 y 15 años: {0}", gente10y15);
+            Console.WriteLine("Edad Promedio:% {0:N2}", promedio);
+            Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------");
+            Console.ReadKey();
+        }
+    }
+}
